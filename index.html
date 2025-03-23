@@ -16,6 +16,7 @@
 
         .container {
             margin-top: 50px;
+            position: relative;
         }
 
         h1 {
@@ -32,7 +33,7 @@
         }
 
         #crate {
-            width: 170px;
+            width: 150px;
             cursor: pointer;
             transition: transform 1.5s ease-in-out;
         }
@@ -64,10 +65,9 @@
             transform: translateX(-50%) scale(0);
             opacity: 0;
             transition: transform 0.5s ease-in-out, opacity 0.5s;
-            text-align: center;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9);
             padding: 15px;
-            border-radius: 10px;
+            border-radius: 12px;
             border: 2px solid cyan;
             box-shadow: 0 0 20px cyan;
         }
@@ -80,30 +80,30 @@
         .pet-bg {
             width: 200px;
             height: 200px;
-            background: radial-gradient(circle, rgba(0,255,255,0.9), rgba(0,0,0,0));
+            background: radial-gradient(circle, rgba(0,255,255,0.8), rgba(0,0,0,0));
             border-radius: 50%;
             position: absolute;
             top: -30px;
             left: 50%;
             transform: translateX(-50%);
-            filter: blur(15px);
+            filter: blur(18px);
             z-index: -1;
             animation: glow 1.5s infinite alternate;
         }
 
         @keyframes glow {
-            0% { filter: blur(15px) brightness(1); }
-            100% { filter: blur(25px) brightness(1.8); }
+            0% { filter: blur(18px) brightness(1); }
+            100% { filter: blur(25px) brightness(1.5); }
         }
 
         .pet-image {
-            width: 160px;
-            filter: drop-shadow(0 0 20px cyan);
+            width: 150px;
+            filter: drop-shadow(0 0 15px cyan);
         }
 
         .pet-name {
-            font-size: 24px;
-            margin-top: 10px;
+            font-size: 22px;
+            margin-top: 8px;
             text-shadow: 0 0 8px cyan;
         }
 
@@ -113,11 +113,12 @@
             font-size: 18px;
             padding: 12px 25px;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
-            margin-top: 15px;
+            margin-top: 12px;
             transition: 0.3s;
             display: inline-block;
+            font-weight: bold;
         }
 
         .btn:hover {
@@ -131,7 +132,7 @@
 
         .info-text {
             font-size: 16px;
-            margin-top: 10px;
+            margin-top: 12px;
             color: cyan;
             text-shadow: 0 0 10px cyan;
             display: none;
@@ -167,11 +168,12 @@
 
             const pets = [
                 { name: "Mega Neon Shadow Dragon (Fly, Ride)", img: "https://cdn3.emoji.gg/emojis/5419-shadow-dragon.png" },
+                { name: "Neon Shadow Dragon (Fly, Ride)", img: "https://cdn3.emoji.gg/emojis/5419-shadow-dragon.png" },
                 { name: "Shadow Dragon (Fly, Ride)", img: "https://cdn3.emoji.gg/emojis/5419-shadow-dragon.png" },
-                { name: "Neon Shadow Dragon", img: "https://cdn3.emoji.gg/emojis/5419-shadow-dragon.png" },
-                { name: "Shadow Dragon", img: "https://cdn3.emoji.gg/emojis/5419-shadow-dragon.png" },
                 { name: "Mega Neon Frost Dragon (Fly, Ride)", img: "https://cdn3.emoji.gg/emojis/7908-frost-dragon.png" },
-                { name: "Frost Dragon (Fly, Ride)", img: "https://cdn3.emoji.gg/emojis/7908-frost-dragon.png" }
+                { name: "Neon Frost Dragon (Fly, Ride)", img: "https://cdn3.emoji.gg/emojis/7908-frost-dragon.png" },
+                { name: "Mega Neon Parrot (Fly, Ride)", img: "https://cdn3.emoji.gg/emojis/5286-parrot.png" },
+                { name: "Mega Neon Giraffe (Fly, Ride)", img: "https://cdn3.emoji.gg/emojis/9525-giraffe.png" }
             ];
 
             let isOpening = false;
@@ -197,7 +199,7 @@
 
                         rewardBox.classList.add("active");
                         claimBtn.style.display = "inline-block";
-                        infoText.style.display = "block";  
+                        infoText.style.display = "block";
 
                         isOpening = false;
                     }, 1500);
